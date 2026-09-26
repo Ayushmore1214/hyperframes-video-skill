@@ -1,0 +1,7 @@
+{
+  "name": "create-video",
+  "version": "0.1.0",
+  "description": "Make narrated explainer videos (Shorts-ready 1080x1920 or 1920x1080) from an idea with HyperFrames, GSAP and a local TTS voice.",
+  "license": "MIT",
+  "keywords": ["video", "hyperframes", "gsap", "youtube-shorts", "explainer", "tts"]
+}

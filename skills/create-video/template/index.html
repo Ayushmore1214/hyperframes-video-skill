@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Explainer video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Theme: change these to match your brand. */
+:root{
+  --bg:#0B1020; --panel:#141B2E; --panel-hi:#1C2542; --ink:#EEF1F8; --muted:#98A2BC; --line:#2A3452; --grid:#172039;
+  --accent:#5EEAD4; --accent2:#C084FC;
+  --client:#C084FC; --net:#FBBF24; --compute:#60A5FA; --data:#34D399; --alert:#FB7185;
+  --head:"Space Grotesk",system-ui,sans-serif; --body:"Inter",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg)}
+/* Vertical 1080x1920. Safe area for Shorts / Reels / TikTok: x 60..940, y 150..1480.
+   The right 140px (like/comment/share) and bottom 440px (caption, channel) are covered by the app UI. */
+#root{position:relative;width:1080px;height:1920px;overflow:hidden;background:var(--bg);color:var(--ink);font-family:var(--body)}
+#bggrid{position:absolute;inset:0}
+.glow{position:absolute;border-radius:50%;width:1000px;height:1000px}
+.glow.a{left:-300px;top:200px;background:radial-gradient(closest-side,rgba(94,234,212,.13),rgba(94,234,212,0))}
+.glow.b{left:400px;top:950px;background:radial-gradient(closest-side,rgba(192,132,252,.13),rgba(192,132,252,0))}
+
+.brand{position:absolute;left:60px;top:150px;font:700 30px var(--head);letter-spacing:-.01em}
+.brand i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:10px;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.progress{position:absolute;right:140px;top:164px;display:flex;gap:8px;opacity:0}
+.pdot{width:60px;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.pfill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+.story{position:absolute;left:60px;width:880px;top:220px;opacity:0}
+.story .pill{display:inline-block;font:600 20px var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(94,234,212,.4);background:rgba(94,234,212,.08);padding:5px 14px;border-radius:99px}
+.story h1{font:700 60px/1.05 var(--head);margin:16px 0 0;letter-spacing:-.02em}
+.story p{font-size:26px;line-height:1.42;margin:14px 0 16px;color:#C9D0E0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-size:18px;padding:4px 14px;border-radius:99px;background:var(--panel);border:1px solid var(--line);color:var(--muted)}
+
+#g{position:absolute;left:60px;top:580px;width:880px;height:900px;overflow:hidden;
+   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 24px,#000 calc(100% - 16px),transparent 100%);
+   mask-image:linear-gradient(to bottom,transparent 0,#000 24px,#000 calc(100% - 16px),transparent 100%)}
+.node{filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
+.node rect.box{fill:url(#nodeFill);stroke-width:1.8}
+.node text{fill:var(--ink);font:600 16px var(--body)}
+.node .ico path{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.ping{fill:none;stroke-width:2.5}
+.k-client{--c:var(--client)} .k-net{--c:var(--net)} .k-compute{--c:var(--compute)} .k-data{--c:var(--data)} .k-alert{--c:var(--alert)}
+.node rect.box,.ping{stroke:var(--c)} .node .ico path{stroke:var(--c)}
+path.e{fill:none;stroke-width:2}
+.e.solid{stroke:#5B6788} .e.dashed{stroke:var(--muted);stroke-dasharray:6 6}
+.e.live{stroke:var(--accent);stroke-width:2.6;stroke-dasharray:10 7;opacity:.9}
+.elbl{font:600 14px var(--body);fill:var(--muted);paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round}
+.elbl.live{fill:var(--accent)}
+.pt{fill:#E6FFFB;filter:drop-shadow(0 0 5px rgba(94,234,212,.95))}
+
+.dock{position:absolute;left:60px;width:880px;bottom:440px;display:flex;flex-direction:column;gap:10px;opacity:0}
+.card{border-radius:14px;padding:14px 22px;font-size:23px;line-height:1.38;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--accent);box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.card b{display:block;font:700 24px var(--head);margin-bottom:2px;color:var(--accent)}
+.card.warn{border-left-color:var(--net)} .card.warn b{color:var(--net)}
+.card.alert{border-left-color:var(--alert)} .card.alert b{color:var(--alert)}
+
+.title,.endcard{position:absolute;inset:0;padding:150px 140px 470px 60px;display:flex;flex-direction:column;justify-content:flex-end;opacity:0}
+.title .eyebrow{font:600 24px var(--head);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.title h1,.endcard h1{font:700 104px/1 var(--head);margin:14px 0 0;letter-spacing:-.03em}
+.title p,.endcard p{font-size:33px;line-height:1.35;color:var(--muted);margin:28px 0 0}
+.acc{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#tsvg{position:absolute;inset:0;width:1080px;height:1920px}
+.tn circle{fill:var(--panel);stroke-width:2.5;stroke:var(--c)} .tn path{fill:none;stroke:var(--c);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.te{stroke:#34406A;stroke-width:2}
+.endcard{justify-content:center;padding-bottom:440px;background:rgba(11,16,32,.72);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+
+/* dev only: index.html?safe draws the areas the Shorts UI covers */
+.safe-ov{position:absolute;background:rgba(251,113,133,.22);outline:2px dashed rgba(251,113,133,.8);display:none}
+</style>
+</head>
+<body>
+<div id="root" data-composition-id="explainer" data-start="0" data-duration="39" data-width="1080" data-height="1920">
+  <svg id="bggrid" width="1080" height="1920"><defs><pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1.2" fill="var(--grid)"/></pattern></defs><rect width="1080" height="1920" fill="url(#dots)"/></svg>
+  <div class="glow a" id="glowA"></div>
+  <div class="glow b" id="glowB"></div>
+  <svg id="g" viewBox="0 0 880 900">
+    <defs><linearGradient id="nodeFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F2947"/><stop offset="1" stop-color="#131A2D"/></linearGradient></defs>
+    <g id="cam"></g>
+  </svg>
+  <div id="stories"></div>
+  <div id="docks"></div>
+  <div class="brand" id="brand"></div>
+  <div class="progress" id="progress"></div>
+
+  <!-- Narration goes here: one audio element per clip, each with a real id, data-start, data-duration
+       and src="audio/<id>.wav". See reference.md, "Timing rules". -->
+
+  <div class="title" id="title">
+    <svg id="tsvg" viewBox="0 0 1080 1920"></svg>
+    <div class="eyebrow" id="tEyebrow"></div>
+    <h1 id="tH1"></h1>
+    <p id="tP"></p>
+  </div>
+  <div class="endcard" id="endcard">
+    <h1 id="eH1"></h1>
+    <p id="eP"></p>
+  </div>
+
+  <div class="safe-ov" style="left:0;top:0;width:1080px;height:150px"></div>
+  <div class="safe-ov" style="left:940px;top:150px;width:140px;height:1330px"></div>
+  <div class="safe-ov" style="left:0;top:1480px;width:1080px;height:440px"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+// ======================= CONTENT: edit this block =======================
+const BRAND = "Your Brand";   // top-left wordmark; "" hides it
+const TITLE = { eyebrow: "Explainer", h1: 'How a web request <span class="acc">gets served</span>', p: "A quick tour from the browser to the database." };
+const END = { h1: 'Fast because <span class="acc">every layer helps</span>', p: "DNS, CDN, load balancer, cache and database, each doing one job." };
+
+// One entry per step. cards (optional) dock at the bottom of the safe area.
+// cam (optional) = node ids to frame; default frames every node visible so far.
+const STEPS = [
+  { t: "The browser asks DNS", b: "Before anything else, the browser turns the domain name into an IP address.", chips: ["DNS lookup"] },
+  { t: "The CDN answers what it can", b: "Static files come straight from an edge server close to the user.", chips: ["Edge cache", "HTTPS"] },
+  { t: "The load balancer picks a server", b: "Requests the CDN cannot answer are spread across healthy app servers.", chips: ["Health checks", "Round robin"] },
+  { t: "The app checks the cache first", b: "Hot data lives in memory, so most reads never reach the database.", chips: ["In-memory cache"],
+    cards: [{ k: "", h: "Cache hit", x: "The app answers from memory and the request is done." }], cam: ["lb", "app1", "app2", "cache"] },
+  { t: "Misses go to the database", b: "On a miss the app queries the database, then writes the answer back to the cache.", chips: ["SQL query", "Cache fill"],
+    cards: [{ k: "warn", h: "Cache miss", x: "One trip to the database, then the next read is a hit." }], cam: ["app1", "app2", "cache", "db"] }
+];
+
+// Nodes: graph units (any scale; the camera fits them). k = colour kind, i = icon, s = step it appears in (1-based).
+const NODES = [
+  { id: "browser", l: "Browser", x: 200, y: 60, k: "client", i: "globe", s: 1 },
+  { id: "dns", l: "DNS", x: 520, y: 60, k: "net", i: "sign", s: 1 },
+  { id: "cdn", l: "CDN edge", x: 360, y: 190, k: "net", i: "layers", s: 2 },
+  { id: "lb", l: "Load balancer", x: 360, y: 320, k: "compute", i: "split", s: 3 },
+  { id: "app1", l: "App server 1", x: 200, y: 450, k: "compute", i: "server", s: 3 },
+  { id: "app2", l: "App server 2", x: 520, y: 450, k: "compute", i: "server", s: 3 },
+  { id: "cache", l: "Cache", x: 200, y: 590, k: "data", i: "bolt", s: 4 },
+  { id: "db", l: "Database", x: 520, y: 590, k: "data", i: "db", s: 5 }
+];
+// Edges: [from, to, kind, step, label, curve]. kind: solid (draws on), dashed, live (flowing + traffic dots).
+const EDGES = [
+  ["browser", "dns", "dashed", 1, "lookup"],
+  ["browser", "cdn", "live", 2, "HTTPS"],
+  ["cdn", "lb", "live", 3, "cache miss"],
+  ["lb", "app1", "solid", 3], ["lb", "app2", "solid", 3],
+  ["app1", "cache", "live", 4, "GET"],
+  ["app1", "db", "live", 5, "query", -30], ["app2", "db", "solid", 5]
+];
+
+// Timing (seconds). TOTAL must equal the root's data-duration attribute, or the render truncates.
+const TITLE_LEN = 4, DUR = [6, 6, 6, 6, 6], END_LEN = 5;
+// ========================================================================
+
+const S = []; DUR.reduce((t, d, k) => (S[k] = t, t + d), TITLE_LEN);
+const END_START = S[S.length - 1] + DUR[DUR.length - 1];
+const TOTAL = END_START + END_LEN;
+const root = document.getElementById("root");
+if (Math.abs(+root.dataset.duration - TOTAL) > 0.001) console.error(`data-duration is ${root.dataset.duration} but TOTAL is ${TOTAL}. Set data-duration="${TOTAL}".`);
+
+// ---------- icons: 13px glyphs centred on 0,0 ----------
+const circ = (x, y, r) => `M${x - r} ${y}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0`;
+const ICON = {
+  globe: circ(0, 0, 6.5) + "M-6.5 0H6.5M0 -6.5C-3.2 -3 -3.2 3 0 6.5M0 -6.5C3.2 -3 3.2 3 0 6.5",
+  sign: "M0 -6.5V6.5M0 -5H4.5L6.5 -3.3L4.5 -1.6H0M0 0.6H-4.5L-6.5 2.3L-4.5 4H0",
+  layers: "M0 -6.5L6.5 -3.2L0 0L-6.5 -3.2Z M-6.5 0.3L0 3.5L6.5 0.3 M-6.5 3.3L0 6.5L6.5 3.3",
+  split: "M-6.5 0H-1.5L3.5 -4.5H6.5M-1.5 0L3.5 4.5H6.5M4.5 -6.5L6.5 -4.5L4.5 -2.5M4.5 2.5L6.5 4.5L4.5 6.5",
+  server: "M-6.5 -6H6.5V-1H-6.5Z M-6.5 1H6.5V6H-6.5Z M-4 -3.5h0.01M-4 3.5h0.01",
+  db: "M-5.5 -4a5.5 2.2 0 1 0 11 0a5.5 2.2 0 1 0 -11 0M-5.5 -4V4a5.5 2.2 0 0 0 11 0V-4M-5.5 0a5.5 2.2 0 0 0 11 0",
+  bolt: "M1.2 -7L-5 1.2H0L-1.2 7L5 -1.2H0Z",
+  cube: "M0 -6.5L6 -3.2V3.2L0 6.5L-6 3.2V-3.2Z M-6 -3.2L0 0L6 -3.2M0 0V6.5",
+  shield: "M0 -7L6 -4.8V0.5C6 3.8 3.3 6 0 7C-3.3 6 -6 3.8 -6 0.5V-4.8Z",
+  cloud: "M-5 4.5H4.5A3.5 3.5 0 0 0 5 -2.5A4.8 4.8 0 0 0 -4.2 -2A3.3 3.3 0 0 0 -5 4.5Z",
+  user: circ(0, -2.8, 3) + "M-5.8 6.5C-5 2.8 -2.6 1.3 0 1.3C2.6 1.3 5 2.8 5.8 6.5"
+};
+
+// ---------- build ----------
+const NS = "http://www.w3.org/2000/svg";
+const cam = document.getElementById("cam");
+const mk = (t, a = {}, p = cam) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+const W = 190, H = 50, byId = Object.fromEntries(NODES.map(n => [n.id, n]));
+NODES.forEach(n => n.w = n.w || W);
+const E = EDGES.map(a => ({ a: a[0], b: a[1], k: a[2], s: a[3], lbl: a[4], c: a[5] || 0 }));
+
+document.getElementById("brand").innerHTML = BRAND ? `<i></i>${BRAND}` : "";
+document.getElementById("tEyebrow").textContent = TITLE.eyebrow;
+document.getElementById("tH1").innerHTML = TITLE.h1;
+document.getElementById("tP").textContent = TITLE.p;
+document.getElementById("eH1").innerHTML = END.h1;
+document.getElementById("eP").textContent = END.p;
+
+const edgeL = mk("g"), ptL = mk("g"), lblL = mk("g"), pingL = mk("g"), nodeL = mk("g");
+E.forEach(e => {
+  const A = byId[e.a], B = byId[e.b];
+  const mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2, dx = B.x - A.x, dy = B.y - A.y, len = Math.hypot(dx, dy) || 1;
+  const cx = mx - dy / len * e.c, cy = my + dx / len * e.c;
+  e.el = mk("path", { d: `M${A.x} ${A.y} Q${cx} ${cy} ${B.x} ${B.y}`, class: `e ${e.k}` }, edgeL);
+  e.len = e.el.getTotalLength();
+  if (e.k === "solid") e.el.style.strokeDasharray = `${e.len} ${e.len}`;
+  if (e.lbl) { e.lel = mk("text", { x: (A.x + 2 * cx + B.x) / 4 + (dx === 0 ? 10 : 0), y: (A.y + 2 * cy + B.y) / 4 - 8, "text-anchor": dx === 0 ? "start" : "middle", class: `elbl ${e.k}` }, lblL); e.lel.textContent = e.lbl; }
+});
+NODES.forEach(n => {
+  const g = mk("g", { class: `node k-${n.k}` }, nodeL);
+  mk("rect", { class: "box", x: n.x - n.w / 2, y: n.y - H / 2, width: n.w, height: H, rx: 12 }, g);
+  const ig = mk("g", { class: "ico", transform: `translate(${n.x - n.w / 2 + 24} ${n.y}) scale(1.25)` }, g);
+  mk("path", { d: ICON[n.i] || ICON.cube }, ig);
+  mk("text", { x: n.x + 12, y: n.y + 5.5, "text-anchor": "middle" }, g).textContent = n.l;
+  n.el = g;
+  n.ping = mk("rect", { class: `ping k-${n.k}`, x: n.x - n.w / 2, y: n.y - H / 2, width: n.w, height: H, rx: 12 }, pingL);
+});
+
+const stories = document.getElementById("stories"), docks = document.getElementById("docks"), prog = document.getElementById("progress");
+STEPS.forEach((st, k) => {
+  const d = document.createElement("section"); d.className = "story"; d.id = "story" + k;
+  d.innerHTML = `<span class="pill">Step ${k + 1} of ${STEPS.length}</span><h1>${st.t}</h1><p>${st.b}</p><div class="chips">${(st.chips || []).map(c => `<span>${c}</span>`).join("")}</div>`;
+  stories.appendChild(d);
+  if (st.cards) { const c = document.createElement("section"); c.className = "dock"; c.id = "dock" + k; c.innerHTML = st.cards.map(x => `<div class="card ${x.k}"><b>${x.h}</b>${x.x}</div>`).join(""); docks.appendChild(c); }
+  const p = document.createElement("div"); p.className = "pdot"; p.innerHTML = `<i class="pfill" id="pf${k}"></i>`; prog.appendChild(p);
+});
+
+// title constellation: the video's own icons, in a loose network above the headline
+const TPOS = [[190, 330], [420, 250], [650, 340], [850, 250], [300, 520], [540, 490], [780, 520], [640, 680], [160, 680]];
+const TE = [[0, 1], [1, 2], [2, 3], [0, 4], [1, 4], [4, 5], [2, 5], [5, 6], [3, 6], [5, 7], [6, 7], [4, 8]];
+const tsvg = document.getElementById("tsvg");
+const tEdges = TE.map(([a, b]) => { const p = mk("path", { d: `M${TPOS[a][0]} ${TPOS[a][1]}L${TPOS[b][0]} ${TPOS[b][1]}`, class: "te" }, tsvg); const l = p.getTotalLength(); p.style.strokeDasharray = `${l} ${l}`; p.style.strokeDashoffset = l; return p; });
+const tNodes = TPOS.map(([x, y], i) => {
+  const n = NODES[i % NODES.length], g = mk("g", { class: `tn k-${n.k}` }, tsvg);
+  mk("circle", { cx: x, cy: y, r: 32 }, g);
+  mk("path", { d: ICON[n.i] || ICON.cube, transform: `translate(${x} ${y}) scale(2.2)` }, g);
+  return g;
+});
+
+// ---------- timeline (everything seekable: no onUpdate callbacks, seek() suppresses them) ----------
+const tl = gsap.timeline({ paused: true });
+tl.set([...NODES.flatMap(n => [n.el, n.ping]), ...E.flatMap(e => [e.el, e.lel].filter(Boolean))], { opacity: 0 }, 0);
+tl.set([...NODES.flatMap(n => [n.el, n.ping]), ...tNodes], { transformOrigin: "50% 50%" }, 0);
+tl.fromTo("#glowA", { x: 0, y: 0 }, { x: 160, y: -120, duration: TOTAL, ease: "sine.inOut" }, 0);
+tl.fromTo("#glowB", { x: 0, y: 0 }, { x: -200, y: -240, duration: TOTAL, ease: "sine.inOut" }, 0);
+
+// title
+tl.set("#title", { opacity: 1 }, 0);
+tNodes.forEach((g, i) => tl.fromTo(g, { opacity: 0, scale: 0.4 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(2)" }, 0.15 + i * 0.1));
+tEdges.forEach((p, i) => tl.to(p, { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, 0.4 + i * 0.08));
+tl.to(tNodes, { y: i => (i % 2 ? -10 : 10), duration: TITLE_LEN, ease: "sine.inOut" }, 1.2);
+tl.from("#tEyebrow", { opacity: 0, y: 16, duration: 0.5, ease: "power3.out" }, 0.6);
+tl.from("#tH1", { opacity: 0, y: 30, duration: 0.7, ease: "power3.out" }, 0.8);
+tl.from("#tP", { opacity: 0, y: 20, duration: 0.6, ease: "power3.out" }, 1.2);
+tl.to("#title", { opacity: 0, duration: 0.5, ease: "power1.in" }, TITLE_LEN - 0.5);
+tl.to("#progress", { opacity: 1, duration: 0.4 }, TITLE_LEN);
+
+// steps: story text, card docks, progress
+STEPS.forEach((st, k) => {
+  const el = "#story" + k, start = S[k], stop = start + DUR[k];
+  tl.fromTo(el, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, start + 0.1);
+  tl.from(`${el} .chips span`, { opacity: 0, y: 8, duration: 0.3, stagger: 0.08 }, start + 0.45);
+  tl.to(el, { opacity: 0, y: -10, duration: 0.35, ease: "power1.in" }, stop - 0.4);
+  if (st.cards) {
+    tl.set("#dock" + k, { opacity: 1 }, start + 0.5);
+    tl.from(`#dock${k} .card`, { opacity: 0, y: 24, duration: 0.5, stagger: 0.6, ease: "power3.out" }, start + 1.6);
+    tl.to("#dock" + k, { opacity: 0, y: 12, duration: 0.35 }, stop - 0.4);
+  }
+  tl.to("#pf" + k, { width: "100%", duration: 0.6, ease: "power2.out" }, start + 0.1);
+});
+tl.to("#progress", { opacity: 0, duration: 0.4 }, END_START);
+
+// nodes pop in with a ping ring
+const appear = {}, seen = {};
+NODES.forEach(n => { seen[n.s] = seen[n.s] || 0; appear[n.id] = S[n.s - 1] + 0.9 + seen[n.s]++ * 0.15; });
+NODES.forEach(n => {
+  tl.fromTo(n.el, { opacity: 0, scale: 0.55 }, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.8)", immediateRender: false }, appear[n.id]);
+  tl.fromTo(n.ping, { opacity: 0.9, scale: 1 }, { opacity: 0, scale: 1.35, duration: 0.8, ease: "power2.out", immediateRender: false }, appear[n.id] + 0.1);
+});
+
+// edges: solid draws on, others fade in; live edges flow and carry traffic dots
+const eSeen = {};
+E.forEach(e => {
+  eSeen[e.s] = eSeen[e.s] || 0;
+  const t = Math.max(appear[e.a], appear[e.b]) + 0.35 + eSeen[e.s]++ * 0.08;
+  if (e.k === "solid") tl.fromTo(e.el, { opacity: 0, strokeDashoffset: e.len }, { opacity: 1, strokeDashoffset: 0, duration: 0.6, ease: "power2.out", immediateRender: false }, t);
+  else tl.fromTo(e.el, { opacity: 0 }, { opacity: e.k === "live" ? 0.9 : 1, duration: 0.45, immediateRender: false }, t);
+  if (e.lel) tl.fromTo(e.lel, { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, t + 0.2);
+  if (e.k === "live") {
+    const d = TOTAL - t;
+    tl.fromTo(e.el, { strokeDashoffset: 0 }, { strokeDashoffset: -17 * Math.round(d / 1.1), duration: d, ease: "none", immediateRender: false }, t);
+    const per = Math.max(1.3, e.len / 170), A = byId[e.a], path = e.el, len = e.len;
+    [0, 0.5].forEach(ph => {
+      const dot = mk("circle", { cx: A.x, cy: A.y, r: 4, class: "pt" }, ptL), t0 = t + 0.3, dd = TOTAL - t0;
+      tl.set(dot, { opacity: 0 }, 0);
+      tl.to(dot, { opacity: 1, duration: 0.4 }, t0);
+      // a modifier runs on every render, including seeks, so the dot position is always right
+      tl.fromTo({ v: ph }, { v: ph }, { v: ph + dd / per, duration: dd, ease: "none", immediateRender: false,
+        modifiers: { v: v => { const p = path.getPointAtLength((v % 1) * len); dot.setAttribute("cx", p.x.toFixed(2)); dot.setAttribute("cy", p.y.toFixed(2)); return v; } } }, t0);
+    });
+  }
+});
+
+// ---------- camera: frames the nodes each step is about ----------
+const VW = 880, VH = 900, M = 40, MAXZ = 1.9;
+function fit(ids, availH = VH) {
+  const ns = ids.map(id => byId[id]);
+  const x0 = Math.min(...ns.map(n => n.x - n.w / 2)) - M, x1 = Math.max(...ns.map(n => n.x + n.w / 2)) + M;
+  const y0 = Math.min(...ns.map(n => n.y - H / 2)) - M, y1 = Math.max(...ns.map(n => n.y + H / 2)) + M;
+  const s = Math.min(VW / (x1 - x0), availH / (y1 - y0), MAXZ);
+  return { cx: (x0 + x1) / 2, cy: (y0 + y1) / 2, s, fy: availH / 2 };
+}
+const camXY = c => ({ x: VW / 2 - c.cx * c.s, y: c.fy - c.cy * c.s, scale: c.s });
+const shots = STEPS.map((st, k) => {
+  const ids = st.cam || NODES.filter(n => n.s <= k + 1).map(n => n.id);
+  const dockH = st.cards ? 30 + st.cards.length * 140 : 0;
+  return { t: S[k] - 0.2, d: 1.2, ...fit(ids, VH - dockH) };
+});
+const all = fit(NODES.map(n => n.id));
+shots.push({ t: END_START, d: 1.4, ...all }, { t: END_START + 1.4, d: END_LEN - 1.4, ...all, s: all.s * 0.9, ease: "none" });
+tl.set(cam, { svgOrigin: "0 0", ...camXY(shots[0]) }, 0);
+shots.slice(1).reduce((prev, sh) => {
+  tl.fromTo(cam, camXY(prev), { ...camXY(sh), duration: sh.d, ease: sh.ease || "power2.inOut", immediateRender: false }, sh.t);
+  return sh;
+}, shots[0]);
+
+// end card over the finished graph
+tl.to("#brand", { opacity: 0, duration: 0.4 }, END_START);
+tl.fromTo("#endcard", { opacity: 0 }, { opacity: 1, duration: 0.8, immediateRender: false }, END_START + 0.2);
+tl.from("#eH1", { opacity: 0, y: 30, duration: 0.7, ease: "power3.out" }, END_START + 0.5);
+tl.from("#eP", { opacity: 0, y: 20, duration: 0.6 }, END_START + 1.0);
+tl.set({}, {}, TOTAL);
+
+window.__timelines = window.__timelines || {};
+window.__timelines["explainer"] = tl;
+// ?play plays in a browser, ?t=12 freezes on one moment, &safe overlays the Shorts UI zones
+const q = new URLSearchParams(location.search);
+if (q.has("play")) tl.play();
+if (q.get("t")) tl.seek(+q.get("t"));
+if (q.has("safe")) document.querySelectorAll(".safe-ov").forEach(e => e.style.display = "block");
+  </script>
+</div>
+</body>
+</html>

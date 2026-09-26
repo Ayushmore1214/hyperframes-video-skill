@@ -1,0 +1,9 @@
+[
+  {"id": "00_title", "text": "How a web request gets served, from the browser to the database.", "window": 4},
+  {"id": "01_dns", "text": "First, the browser asks D N S to turn the domain name into an address.", "window": 6},
+  {"id": "02_cdn", "text": "The C D N answers what it can, straight from an edge server near the user.", "window": 6},
+  {"id": "03_lb", "text": "Everything else goes to a load balancer, which picks a healthy app server.", "window": 6},
+  {"id": "04_cache", "text": "The app checks its cache first. Most reads end right here.", "window": 6},
+  {"id": "05_db", "text": "On a miss, it queries the database and fills the cache for next time.", "window": 6},
+  {"id": "06_end", "text": "Fast, because every layer does one job well.", "window": 5}
+]

@@ -1,0 +1,14 @@
+{
+  "name": "hyperframes-video-skill",
+  "description": "A Claude Code skill that turns an idea into a narrated, Shorts-ready explainer video.",
+  "owner": {
+    "name": "Ayush More"
+  },
+  "plugins": [
+    {
+      "name": "create-video",
+      "source": "./",
+      "description": "Make narrated explainer videos (Shorts-ready 1080x1920 or 1920x1080) from an idea with HyperFrames, GSAP and a local TTS voice."
+    }
+  ]
+}
