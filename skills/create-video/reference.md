@@ -92,11 +92,11 @@ Narration uses the local Kokoro voice model through `hyperframes tts`. Nothing i
 
 macOS:
 
-    brew install ffmpeg espeak-ng
-    python3 -m venv ~/.cache/hyperframes/tts-venv
+    brew install ffmpeg espeak-ng python@3.12
+    python3.12 -m venv ~/.cache/hyperframes/tts-venv     # kokoro-onnx needs Python 3.10+; macOS python3 is 3.9
     ~/.cache/hyperframes/tts-venv/bin/pip install kokoro-onnx soundfile
 
-Linux (Debian/Ubuntu): `sudo apt install ffmpeg espeak-ng python3-venv`, then the same two venv lines.
+Linux (Debian/Ubuntu): `sudo apt install ffmpeg espeak-ng python3-venv`, then the same two venv lines with any Python 3.10+.
 
 Point HyperFrames at them (`gen_narration.py` fills these in automatically when it can find them):
 

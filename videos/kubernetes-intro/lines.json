@@ -1,0 +1,62 @@
+[
+  {
+    "id": "c01",
+    "text": "Behind every app you use,"
+  },
+  {
+    "id": "c02",
+    "text": "every message. Every payment. Every song you stream."
+  },
+  {
+    "id": "c03",
+    "text": "Something is orchestrating all of this."
+  },
+  {
+    "id": "vo02",
+    "text": "It finds a machine. Pulls your image. Starts your app. And keeps it running."
+  },
+  {
+    "id": "vo03",
+    "text": "This is Kubernetes. A control plane that watches every machine in your cluster."
+  },
+  {
+    "id": "vo04",
+    "text": "Your app breaks. Kubernetes restarts it."
+  },
+  {
+    "id": "vo05",
+    "text": "Traffic spikes. Kubernetes scales it."
+  },
+  {
+    "id": "vo06",
+    "text": "A node dies. Kubernetes moves it."
+  },
+  {
+    "id": "vo07",
+    "text": "Automatically."
+  },
+  {
+    "id": "vo08",
+    "text": "You describe what you want. Kubernetes makes it real, and keeps it that way."
+  },
+  {
+    "id": "vo09",
+    "text": "Traffic always finds a healthy pod."
+  },
+  {
+    "id": "vo10",
+    "text": "Machines fail. Your app doesn't."
+  },
+  {
+    "id": "vo11",
+    "text": "Thousands of machines. Countless containers. One system."
+  },
+  {
+    "id": "vo12",
+    "text": "Kubernetes. The operating system of the cloud."
+  },
+  {
+    "id": "vo13",
+    "text": "And it's open source. Built in the open, by thousands of contributors."
+  }
+]

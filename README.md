@@ -1,65 +1,67 @@
-# create-video: a Claude Code skill for narrated explainer videos
+# create-video
 
-Describe a video, and Claude Code writes the script, builds an animated HTML composition,
-generates a voiceover on your machine, and renders an MP4 with
-[HyperFrames](https://www.npmjs.com/package/hyperframes).
+**Describe a video. Get an MP4.** A Claude Code skill that writes the script, animates it in HTML,
+voices it on your machine, and renders it with [HyperFrames](https://www.npmjs.com/package/hyperframes).
+There's no video editor anywhere in the loop.
 
-- **Vertical 1080x1920 by default**, laid out to stay clear of the YouTube Shorts / Reels / TikTok
-  buttons and caption. Landscape 1920x1080 is supported too.
-- **Motion that follows the story:** a camera that frames what each step is about, nodes that pop
-  in with icons, edges that draw themselves, and glowing traffic along live connections.
-- **Two check-ins, no babysitting:** you approve the script and voice, then watch a browser preview
-  before the render. Everything else runs on its own.
-- **Local voice:** narration uses the open Kokoro voice model on your machine.
+## See it
 
-## Install
+**[Kubernetes launch video →](videos/kubernetes-intro/)**: 73 seconds, vertical, voiced and
+captioned. It was made in four rounds of prompting; every prompt is in
+[`PROMPT.md`](videos/kubernetes-intro/PROMPT.md).
 
-In Claude Code:
+## Get started (5 minutes)
 
-    /plugin marketplace add Ayushmore1214/hyperframes-video-skill
-    /plugin install create-video@hyperframes-video-skill
+**1. Install the skill** (in Claude Code):
 
-Or copy `skills/create-video/` into `~/.claude/skills/` (you won't get updates this way).
+```
+/plugin marketplace add Ayushmore1214/hyperframes-video-skill
+/plugin install create-video@hyperframes-video-skill
+```
 
-## One-time setup
+**2. One-time setup** (macOS):
 
-You need Node 22+, Google Chrome, and FFmpeg. For the voiceover you also need espeak-ng and a small
-Python environment.
+```bash
+brew install ffmpeg espeak-ng python@3.12
+python3.12 -m venv ~/.cache/hyperframes/tts-venv
+~/.cache/hyperframes/tts-venv/bin/pip install kokoro-onnx soundfile
+```
 
-macOS:
+You also need Node 22+ and Google Chrome. On Linux, use `sudo apt install ffmpeg espeak-ng python3-venv`
+with any Python 3.10+. Skip the last two lines if you only want silent videos.
 
-    brew install ffmpeg espeak-ng
-    python3 -m venv ~/.cache/hyperframes/tts-venv
-    ~/.cache/hyperframes/tts-venv/bin/pip install kokoro-onnx soundfile
+**3. Ask for a video:**
 
-Linux: `sudo apt install ffmpeg espeak-ng python3-venv`, then the same two venv lines.
+> Make a 45-second Short explaining how our job queue retries failed tasks. Brand "Acme", teal and orange.
 
-Skip the voice setup if you only want silent videos. Claude can walk you through it later.
+Claude checks in twice: once to approve the script and voice, once to watch a browser preview. Then it
+renders the MP4 to `videos/<name>/renders/`.
 
-## Use
+## What you get
 
-Ask Claude Code for a video, for example:
+- **Vertical 1080x1920 by default**, kept clear of the Shorts / Reels / TikTok buttons and captions.
+  Landscape works too.
+- **Motion with a point:** the camera follows the story, components animate in, and live connections
+  carry traffic.
+- **A local voice** (the open Kokoro model), with timing checked against every scene.
+- **Deterministic renders:** everything runs on one GSAP timeline, so the same file renders the same
+  way every time.
 
-> Make a 45-second Short explaining how our job queue retries failed tasks. Brand name "Acme",
-> colours teal and orange.
+## Inside
 
-> Turn this index.html into a narrated 1080p video.
+```
+skills/create-video/
+  SKILL.md                  the workflow Claude follows
+  reference.md              timing, audio, safe area, camera, voice setup
+  scripts/gen_narration.py  voices every line and checks it fits its scene
+  template/                 a starter video ("How a web request gets served")
+videos/kubernetes-intro/    the example above, with its prompts
+```
 
-Claude checks in twice (script and voice, then the preview) and gives you the MP4 in
-`videos/<name>/renders/`.
-
-## What's inside
-
-    skills/create-video/
-      SKILL.md                  the workflow Claude follows
-      reference.md              timing model, audio rules, safe area, camera, voice setup
-      scripts/gen_narration.py  makes every voice clip and checks it fits its step
-      template/index.html       starter video ("How a web request gets served"), vertical, silent
-      template/lines.json       matching narration lines
-
-To see the template, open `skills/create-video/template/index.html?play` in Chrome. Add `&safe` to
-shade the areas the Shorts UI covers.
+Want to see the starter without installing anything? Open `skills/create-video/template/index.html?play`
+in Chrome.
 
 ## License
 
-MIT
+MIT for the skill and template. The example video uses the Kubernetes and CNCF logos, which are
+trademarks of The Linux Foundation (see its [README](videos/kubernetes-intro/README.md#credits)).
